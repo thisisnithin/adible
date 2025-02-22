@@ -4,7 +4,7 @@ from uuid import uuid4
 from domain.audio_file import get_audio_file_by_id, update_audio_status
 from db import get_db_connection
 
-from interface import determine_ad_placement, generate_ad_audio_with_nearby_audio, generate_advertisement_audio, generate_advertisements, insert_advertisement_audio, transcribe_audio_with_timestamps
+from interface import determine_ad_placement, determine_optimal_voice_id, generate_ad_audio_with_nearby_audio, generate_advertisement_audio, generate_advertisements, insert_advertisement_audio, transcribe_audio_with_timestamps
 from domain.transcription_segments import TranscriptionSegmentDb, get_transcription_segment_by_id, insert_transcription_segment
 from domain.common import ProcessingStatus
 from domain.generated_ad import GeneratedAd, get_generated_ad_by_id, insert_generated_ad
@@ -64,7 +64,12 @@ def process_audio_file_and_generate_advertisements(audio_file_id: str):
                 print(f"Generated Advertisement Texts: {generated_advertisement_texts}")
 
                 for generated_advertisement_text in generated_advertisement_texts:
-                    advertisement_audio_path = generate_advertisement_audio(generated_advertisement_text.segue + " " + generated_advertisement_text.content + " " + generated_advertisement_text.exit)
+                    base_text = generated_advertisement_text.segue + " " + generated_advertisement_text.content + " " + generated_advertisement_text.exit
+                    voice_id = determine_optimal_voice_id(base_text, db_transcription_segments, ad_placement)
+                    if voice_id == "default":
+                        advertisement_audio_path = generate_advertisement_audio(base_text)
+                    else:
+                        advertisement_audio_path = generate_advertisement_audio(base_text, voice_id)
                     with open(advertisement_audio_path, "rb") as f:
                         advertisement_audio_bytes = f.read()
                     os.remove(advertisement_audio_path)

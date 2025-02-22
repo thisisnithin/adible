@@ -12,6 +12,7 @@ import uuid
 import io
 
 from domain.advertisement import AdvertisementDb
+from voices import AVAILABLE_VOICES
 
 load_dotenv()
 
@@ -148,6 +149,7 @@ def _determine_ad_placement(transcription_segments: list[TranscriptionSegment], 
     Please focus on following the following rules:
     1. You need to determine what ad can be placed in after a segment such that it is a part of the conversation.
     2. If no natural placement is found, then return an empty <possible_ad_placements> tag.
+    3. Do not restrict to a single language in a multiple language audio recording.
 
 
     Here is the transcription of the audio recording:
@@ -287,6 +289,17 @@ Their Windows 10 and 11 OEM Keys sell for a fraction of retail and will unlock t
 use VIP SCD key on your next PC build and now lets get back to this PC.
 </exit>
 </advertisement>
+<advertisement>
+<segue>
+क्या आप रचनात्मकता और मज़े की तलाश में हैं? तो आइए जानते हैं हमारे प्रायोजक LEGO के बारे में
+</segue>
+<content>
+LEGO के नए साहसिक सेट्स के साथ अपनी कल्पना को उड़ान दें। हर सेट में उच्च गुणवत्ता वाले ब्रिक्स, विस्तृत निर्देश पुस्तिका, और असीमित रचनात्मक संभावनाएं हैं। चाहे आप शुरुआती बिल्डर हों या अनुभवी LEGO प्रेमी, हमारे पास हर कौशल स्तर के लिए सेट हैं। इस महीने के विशेष ऑफर में सभी LEGO सिटी और LEGO टेकनिक सेट्स पर 20% की छूट पाएं। साथ ही, VIP सदस्यों के लिए अतिरिक्त बोनस प्वाइंट्स!
+</content>
+<exit>
+LEGO के साथ अपनी रचनात्मक यात्रा शुरू करें, और अब वापस लौटते हैं हमारी मुख्य कहानी की ओर।
+</exit>
+</advertisement>
 </examples>
 
 Here is the advertisement placement:
@@ -304,6 +317,7 @@ Please follow the below rules when generating the advertisements:
 2. The advertisement content should be very short and to the point.
 3. The ending of the advertisement should be a segue back to the show.
 4. Always provide three variations of the same advertisement.
+5. Try to match the language used by the segments.
 
 Please respond in the format provided between the <example></example> tags.
 <example>
@@ -347,7 +361,78 @@ def generate_advertisements(ad_placement: AdvertisementPlacement, transcription_
 
     return advertisement_texts
 
-def generate_advertisement_audio(advertisement_text: str, voice_id: str = "JBFqnCBsd6RMkjVDRZzb", file_path: str = None) -> str:
+def determine_optimal_voice_id(advertisement_text: str, transcription_segments: list[TranscriptionSegment], ad_placement: AdvertisementPlacement) -> str:
+    voices_xml = "\n".join([
+        f"<voice id='{voice.id}'>"
+        f"<description>{voice.description}</description>"
+        f"<language>{voice.language}</language>"
+        f"</voice>"
+    for voice in AVAILABLE_VOICES])
+
+    surrounding_segments: list[TranscriptionSegment] = []
+    segment_nos = {segment.no: segment for segment in transcription_segments}
+
+    for offset in [-2, -1, 0, 1, 2]:
+        target_no = ad_placement.transcription_segment.no + offset
+        if target_no in segment_nos:
+            surrounding_segments.append(segment_nos[target_no])
+
+    surrounding_segments_xml = "\n".join([
+        f"<transcription_segment no='{segment.no}'>"
+        f"<text>{segment.text}</text>"
+        f"</transcription_segment>"
+    for segment in surrounding_segments])
+
+    prompt = f"""You are a marketing expert agent. You know your way around selecting the right voice for an advertisement.
+You will be given an advertisement text, the surrounding segments of the audio recording, and the advertisement placement.
+Your job is to select the optimal voice for the advertisement.
+
+Here are the surrounding segments of the audio recording:
+<surrounding_segments>
+{surrounding_segments_xml}
+</surrounding_segments>
+
+Here is the advertisement text:
+<advertisement_text>
+{advertisement_text}
+</advertisement_text>
+
+The available voices are:
+<available_voices>
+{voices_xml}
+</available_voices>
+
+Please follow the below rules when selecting the voice:
+1. The voice should match the tone of the surrounding segments.
+2. The conversation pace should be optimal for the selected voice.
+3. The voice should be able to speak the advertisement text naturally.
+4. When no voice is a good fit, return the voice with id 'default'.
+
+Please respond in the format provided between the <example></example> tags.
+<example>
+<response>
+<thinking>
+This conversation seems to be between two people, they seem to be interested in an sports car.
+Both people interested seem to be males in their 30s.
+</thinking>
+<voice id='voice id'/> <!-- The voice that should be used for the advertisement -->
+</response>
+</example>
+"""
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}, {"role": "assistant", "content": "<response>"}],
+        stop=["</response>"]
+    )
+
+    xml_response = response.choices[0].message.content
+    root = ET.fromstring(f"<response>{xml_response}</response>")
+    voice_id = root.find('.//voice').get('id')
+    return voice_id
+    
+
+def generate_advertisement_audio(advertisement_text: str, voice_id: str = "UgBBYS2sOqTuMpoF3BR0", file_path: str = None) -> str:
     elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
     audio_response = elevenlabs_client.text_to_speech.convert(
         text=advertisement_text,
