@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS stitched_audio (
     id TEXT PRIMARY KEY,
     audio_file_id TEXT NOT NULL,
     generated_ad_id TEXT NOT NULL,
-    bytes BLOB NOT NULL,
+    audio_bytes BLOB,
     processing_status TEXT NOT NULL,
     FOREIGN KEY (audio_file_id) REFERENCES audio_files(id),
     FOREIGN KEY (generated_ad_id) REFERENCES generated_ads(id)

@@ -156,7 +156,7 @@ async def insert_advertisement_audio(background_tasks: BackgroundTasks, request:
                 id=stitched_audio_id,
                 audio_file_id=request.audio_file_id,
                 generated_ad_id=request.generated_ad_id,
-                bytes=None,
+                audio_bytes=None,
                 processing_status=ProcessingStatus.PENDING
             ))
             conn.commit()
@@ -203,7 +203,7 @@ async def get_stitched_audio_bytes(stitched_audio_id: str):
             if not stitched_audio:
                 return {"error": "Stitched audio not found"}, 404
             
-            return Response(content=stitched_audio.bytes, media_type="audio/mpeg")
+            return Response(content=stitched_audio.audio_bytes, media_type="audio/mpeg")
     except Exception as e:
         print(f"Error fetching stitched audio bytes: {str(e)}")
         raise

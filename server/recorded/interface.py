@@ -11,6 +11,8 @@ import xml.etree.ElementTree as ET
 import uuid
 import io
 
+from domain.advertisement import AdvertisementDb
+
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -35,7 +37,7 @@ class TranscriptionSegment(BaseModel):
 
 class AdvertisementPlacement(BaseModel):
     transcription_segment: TranscriptionSegment
-    determined_advertisement: Advertisement
+    determined_advertisement: AdvertisementDb
 
 class GeneratedAdvertisementText(BaseModel):
     segue: str
@@ -172,7 +174,7 @@ def _determine_ad_placement(transcription_segments: list[TranscriptionSegment], 
     ad_placements = []
     for placement in root.findall('.//placement'):
         segment_no = int(placement.find('transcription_segment').get('no'))
-        ad_id = int(placement.find('advertisement').get('id'))
+        ad_id = placement.find('advertisement').get('id')
 
         transcription_segment = transcription_segments[segment_no]
         determined_advertisement = next(ad for ad in available_ads if ad.id == ad_id)

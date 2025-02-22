@@ -88,7 +88,9 @@ def process_audio_file_and_generate_advertisements(audio_file_id: str):
 
             print(f"Completed processing for audio file {audio_file_id}")
     except Exception as e:
+        import traceback
         print(f"Error processing audio file {audio_file_id}: {str(e)}")
+        print(f"Traceback:\n{traceback.format_exc()}")
         with get_db_connection() as conn:
             cursor = conn.cursor()
             update_audio_status(cursor, audio_file_id, ProcessingStatus.FAILED)
@@ -141,7 +143,9 @@ def stitch_advertisements_into_audio_file(audio_file_id: str, generated_ad_id: s
             print(f"Completed stitching advertisements into audio file {audio_file_id}")
             
     except Exception as e:
+        import traceback
         print(f"Error stitching advertisements into audio file {audio_file_id}: {str(e)}")
+        print(f"Traceback:\n{traceback.format_exc()}")
         with get_db_connection() as conn:
             cursor = conn.cursor()
             update_stitched_audio_status(cursor, stitched_audio_id, ProcessingStatus.FAILED)

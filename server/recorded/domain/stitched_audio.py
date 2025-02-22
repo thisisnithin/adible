@@ -9,7 +9,7 @@ class StitchedAudio(BaseModel):
     id: Optional[str] = str(uuid4())
     audio_file_id: str
     generated_ad_id: str
-    bytes: bytes
+    audio_bytes: Optional[bytes] = None
     processing_status: ProcessingStatus
 
 def row_to_stitched_audio(row) -> StitchedAudio:
@@ -17,17 +17,17 @@ def row_to_stitched_audio(row) -> StitchedAudio:
         id=row['id'],
         audio_file_id=row['audio_file_id'],
         generated_ad_id=row['generated_ad_id'],
-        bytes=row['bytes'],
+        audio_bytes=row['audio_bytes'],
         processing_status=ProcessingStatus(row['processing_status'])
     )
 
 def insert_stitched_audio(cursor: Cursor, audio: StitchedAudio) -> str:
     query = """
-    INSERT INTO stitched_audio (id, audio_file_id, generated_ad_id, bytes, processing_status)
+    INSERT INTO stitched_audio (id, audio_file_id, generated_ad_id, audio_bytes, processing_status)
     VALUES (?, ?, ?, ?, ?)
     """
     cursor.execute(query, (audio.id, audio.audio_file_id, audio.generated_ad_id, 
-                          audio.bytes, audio.processing_status))
+                          audio.audio_bytes, audio.processing_status))
     return cursor.lastrowid
 
 def update_stitched_audio_status(cursor: Cursor, audio_id: int, status: ProcessingStatus):
@@ -40,7 +40,7 @@ def get_stitched_audios(cursor: Cursor) -> list[StitchedAudio]:
     return [row_to_stitched_audio(row) for row in rows]
 
 def update_stitched_audio_bytes(cursor: Cursor, audio_id: str, bytes: bytes):
-    query = "UPDATE stitched_audio SET bytes = ? WHERE id = ?"
+    query = "UPDATE stitched_audio SET audio_bytes = ? WHERE id = ?"
     cursor.execute(query, (bytes, audio_id))
 
 def get_stitched_audio_by_id(cursor: Cursor, audio_id: str) -> StitchedAudio:
