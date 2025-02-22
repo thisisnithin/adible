@@ -1,5 +1,6 @@
 from uuid import uuid4
 from fastapi import FastAPI, File, Response, UploadFile, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 
@@ -12,6 +13,15 @@ from service import process_audio_file_and_generate_advertisements, stitch_adver
 from domain.advertisement import AdvertisementDb, get_advertisement_by_id, insert_advertisement, get_advertisements
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Item(BaseModel):
     name: str
