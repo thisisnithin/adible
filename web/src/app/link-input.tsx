@@ -8,6 +8,7 @@ import { crawlForAds } from "./crawl";
 import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 import { useRouter } from "next/navigation";
+import { TextLoop } from "@/components/ui/text-loop";
 
 const LinkInput = () => {
   const [url, setUrl] = useState("");
@@ -33,8 +34,8 @@ const LinkInput = () => {
   };
 
   return (
-    <div className="relative w-full max-w-md">
-      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+    <div className="relative w-full max-w-xl">
+      <div className="absolute top-2 left-0 flex items-center pl-3 pointer-events-none">
         <GlobeIcon className="w-5 h-5 text-gray-400" />
       </div>
       <Input
@@ -57,7 +58,30 @@ const LinkInput = () => {
           <span className="sr-only">Search</span>
         </Button>
       ) : (
-        <LoaderIcon className="absolute inset-y-2 right-2 w-5 h-5 animate-spin text-gray-400" />
+        <LoaderIcon className="absolute top-2 right-2 w-5 h-5 animate-spin text-gray-400" />
+      )}
+      {loading && (
+        <TextLoop
+          interval={4}
+          transition={{
+            duration: 0.5,
+          }}
+          className="text-sm mt-4 mx-auto w-full text-center text-muted-foreground"
+        >
+          <span>Crawling website...</span>
+          <span>Fetching page content...</span>
+          <span>Extracting markdown...</span>
+          <span>Parsing HTML structure...</span>
+          <span>Analyzing site metadata...</span>
+          <span>Scraping internal links...</span>
+          <span>Compiling page data...</span>
+          <span>Processing page data...</span>
+          <span>Generating ad suggestions...</span>
+          <span>Processing ad copy...</span>
+          <span>Validating results...</span>
+          <span>Aggregating ad ideas...</span>
+          <span>Optimizing crawl data...</span>
+        </TextLoop>
       )}
     </div>
   );

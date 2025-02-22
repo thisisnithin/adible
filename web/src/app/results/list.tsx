@@ -2,11 +2,21 @@
 
 import { useReadLocalStorage } from "usehooks-ts";
 import { crawlForAds } from "../crawl";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function List() {
   const result =
     useReadLocalStorage<Awaited<ReturnType<typeof crawlForAds>>>("result");
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
 
   if (!result) {
     return (
@@ -17,7 +27,7 @@ export default function List() {
   }
 
   return result.map((ad, index) => (
-    <div key={index} className="p-4 border-b space-y-6">
+    <div key={index} className="p-4 border-b last:border-b-0 space-y-6">
       <h2 className="text-lg font-bold">{ad.title}</h2>
       <a href={ad.url} target="_blank" className="underline">
         {ad.url}

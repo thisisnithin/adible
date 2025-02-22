@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Export from "./export";
 import List from "./list";
+import Image from "next/image";
 
 export default async function Results({
   searchParams,
@@ -19,7 +20,10 @@ export default async function Results({
 
   return (
     <div className="flex flex-col py-12 h-screen">
-      <h1 className="text-4xl font-bold mb-8">Adible</h1>
+      <h1 className="flex items-center gap-x-2 text-3xl font-black mb-8 -ml-2">
+        <Image src="/headphone.png" width={64} height={64} alt="Adible logo" />
+        Adible
+      </h1>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -34,7 +38,7 @@ export default async function Results({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="border w-full h-full my-12 overflow-auto">
+      <div className="border w-full h-full my-12 overflow-auto rounded-md">
         <List />
       </div>
       <Export />

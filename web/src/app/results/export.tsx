@@ -95,7 +95,7 @@ export default function Export() {
                 />
               </FormControl>
               <FormDescription className="text-left">
-                These are the topics that where your ads will be placed.
+                These are the topics where your ads will be placed.
               </FormDescription>
               <FormMessage />
             </FormItem>
