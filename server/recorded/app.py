@@ -1,11 +1,9 @@
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from pydantic import BaseModel
 import uvicorn
-import uuid
-import os
 
 from db import get_db_connection
-from domain.audio_file import AudioFile, insert_audio_file
+from domain.audio_file import AudioFile, insert_audio_file, get_audio_file_by_id
 from domain.common import ProcessingStatus
 from service import process_audio_file_and_generate_advertisements
 
@@ -50,5 +48,24 @@ async def upload_audio(background_tasks: BackgroundTasks, file: UploadFile = Fil
     
     return {"id": audio_file.id}
 
+@app.get("/audio/{file_id}")
+async def get_audio(file_id: str):
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            audio_file = get_audio_file_by_id(cursor, file_id)
+            
+            if not audio_file:
+                return {"error": "Audio file not found"}, 404
+                
+            return {
+                "id": audio_file.id,
+                "file_name": audio_file.file_name,
+                "processing_status": audio_file.processing_status
+            }
+    except Exception as e:
+        print(f"Error fetching audio file: {str(e)}")
+        raise
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=4001)
+    uvicorn.run("app:app", host="0.0.0.0", port=4001, reload=True)

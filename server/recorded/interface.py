@@ -82,7 +82,7 @@ def transcribe_audio_with_timestamps(file_path: str, audio_id: str) -> list[Tran
                 start=start_time,
                 end=end_time,
                 text=t_segment.text
-            ).model_dump())
+            ))
 
         segments_created += len(transcription_verbose.segments)
         

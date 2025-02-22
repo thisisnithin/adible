@@ -29,7 +29,7 @@ def insert_audio_file(cursor: Cursor, audio_file: AudioFile) -> int:
 
 def update_audio_status(cursor: Cursor, file_id: int, status: ProcessingStatus):
     query = "UPDATE audio_files SET processing_status = ? WHERE id = ?"
-    cursor.execute(query, (status, file_id))
+    cursor.execute(query, (status.value, file_id))
 
 def get_audio_files(cursor: Cursor) -> list[AudioFile]:
     query = "SELECT * FROM audio_files"
