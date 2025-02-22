@@ -73,7 +73,8 @@ async def get_audio_file(file_id: str):
                     "segue": ad.segue,
                     "content": ad.content,
                     "exit": ad.exit,
-                    "transcription_segment_id": ad.transcription_segment_id
+                    "transcription_segment_id": ad.transcription_segment_id,
+                    "advertisement": get_advertisement_by_id(cursor, ad.advertisement_id) if ad.advertisement_id else {}
                 } for ad in generated_ads]
             }
     except Exception as e:
