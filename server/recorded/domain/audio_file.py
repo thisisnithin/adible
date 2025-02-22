@@ -35,3 +35,8 @@ def get_audio_files(cursor: Cursor) -> list[AudioFile]:
     query = "SELECT * FROM audio_files"
     rows = cursor.execute(query).fetchall()
     return [row_to_audio_file(row) for row in rows]
+
+def get_audio_file_by_id(cursor: Cursor, file_id: str) -> Optional[AudioFile]:
+    query = "SELECT * FROM audio_files WHERE id = ?"
+    row = cursor.execute(query, (file_id,)).fetchone()
+    return row_to_audio_file(row) if row else None

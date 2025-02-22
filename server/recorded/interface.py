@@ -7,7 +7,6 @@ from pydantic import BaseModel
 from pydub import AudioSegment
 import json
 from elevenlabs.client import ElevenLabs
-from elevenlabs import play
 import xml.etree.ElementTree as ET
 import uuid
 
@@ -44,7 +43,7 @@ class GeneratedAdvertisementText(BaseModel):
     content: str
     exit: str
 
-def transcribe_audio_with_timestamps(file_path: str, audio_id: str):
+def transcribe_audio_with_timestamps(file_path: str, audio_id: str) -> list[TranscriptionSegment]:
     print(f"Starting transcription for file: {file_path}")
     audio = AudioSegment.from_file(file_path)
     
@@ -89,17 +88,6 @@ def transcribe_audio_with_timestamps(file_path: str, audio_id: str):
         
         total_time_processed += len(snippet) / 1000
         print(f"Total time processed: {total_time_processed} seconds")  # Print total time processed in seconds
-
-    print("Saving transcription data to file...")
-    transcription_data = {
-        "transcriptions": {
-            "id": audio_id,
-            "segments": transcription_segments
-        }
-    }
-    
-    with open("transcription_state.json", "w") as f:
-        json.dump(transcription_data, f, indent=4)
 
     print("Transcription complete!")
     return transcription_segments
@@ -385,39 +373,40 @@ def generate_advertisement_audio(advertisement_text: str) -> str:
 # transcribe_audio_with_timestamps("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3", str(uuid4()))
 
 # Determine Ad Placement
-transcription_segments = load_transcription_segments("transcription_state.json")
-ad_placements = determine_ad_placement(transcription_segments)
+# EXPERIMENTAL
+# transcription_segments = load_transcription_segments("transcription_state.json")
+# ad_placements = determine_ad_placement(transcription_segments)
 
-print(f"Possible Ad Placements: {ad_placements}")
+# print(f"Possible Ad Placements: {ad_placements}")
 
-generated_advertisement_texts = generate_advertisements(ad_placements[0], transcription_segments)
-print(f"Generated Advertisement Texts: {generated_advertisement_texts}")
+# generated_advertisement_texts = generate_advertisements(ad_placements[0], transcription_segments)
+# print(f"Generated Advertisement Texts: {generated_advertisement_texts}")
 
-advertisement_audio_path = generate_advertisement_audio(generated_advertisement_texts[0].segue + " " + generated_advertisement_texts[0].content + " " + generated_advertisement_texts[0].exit)
+# advertisement_audio_path = generate_advertisement_audio(generated_advertisement_texts[0].segue + " " + generated_advertisement_texts[0].content + " " + generated_advertisement_texts[0].exit)
 
 
 # EXPERIMENTAL TESTING
-target_segment = ad_placements[0].transcription_segment
-starting_segment = None
-for segment in transcription_segments:
-    if segment.no == target_segment.no - 2:
-        starting_segment = segment
-        break
+# target_segment = ad_placements[0].transcription_segment
+# starting_segment = None
+# for segment in transcription_segments:
+#     if segment.no == target_segment.no - 2:
+#         starting_segment = segment
+#         break
 
-next_segment = None
-for segment in transcription_segments:
-    if segment.no == target_segment.no + 1:
-        next_segment = segment
-        break
+# next_segment = None
+# for segment in transcription_segments:
+#     if segment.no == target_segment.no + 1:
+#         next_segment = segment
+#         break
 
-original_audio = AudioSegment.from_file("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3")
+# original_audio = AudioSegment.from_file("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3")
 
-start_time_ms = starting_segment.start * 1000
-end_time_ms = target_segment.end * 1000
-play_audio(original_audio[start_time_ms:end_time_ms])
+# start_time_ms = starting_segment.start * 1000
+# end_time_ms = target_segment.end * 1000
+# play_audio(original_audio[start_time_ms:end_time_ms])
 
-ad_audio = AudioSegment.from_file(advertisement_audio_path)
-play_audio(ad_audio)
+# ad_audio = AudioSegment.from_file(advertisement_audio_path)
+# play_audio(ad_audio)
 
-next_start_time_ms = next_segment.start * 1000
-play_audio(original_audio[next_start_time_ms:])
+# next_start_time_ms = next_segment.start * 1000
+# play_audio(original_audio[next_start_time_ms:])
