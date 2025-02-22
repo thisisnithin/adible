@@ -94,7 +94,7 @@ const Process = ({ processId }: { processId: number }) => {
         if (data.processing_status === "COMPLETE") {
           clearInterval(interval);
           setValue(data.generated_ads);
-          router.push(`/generated?id=${processId}`);
+          router.push(`/generated?audioId=${processId}`);
         }
       } catch (error) {
         console.error("Error fetching processing status:", error);
