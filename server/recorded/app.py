@@ -1,5 +1,5 @@
 from uuid import uuid4
-from fastapi import FastAPI, File, Response, UploadFile, BackgroundTasks
+from fastapi import FastAPI, File, Response, UploadFile, BackgroundTasks, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
@@ -116,7 +116,7 @@ async def get_all_audio_files_http():
         raise
 
 @app.get("/generated-ad/{ad_id}")
-def get_generated_ad(ad_id: str):
+def get_generated_ad(ad_id: str, range: str = Header(None)):
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -125,7 +125,27 @@ def get_generated_ad(ad_id: str):
             if not ad:
                 return {"error": "Generated ad not found"}, 404
             
-            return Response(content=ad.audio_bytes, media_type="audio/mpeg")
+            content = ad.audio_bytes
+            content_length = len(content)
+            
+            if range:
+                start, end = range.replace("bytes=", "").split("-")
+                start = int(start)
+                end = int(end) if end else content_length - 1
+                content = content[start:end + 1]
+                
+                headers = {
+                    "Content-Range": f"bytes {start}-{end}/{content_length}",
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": str(len(content))
+                }
+                return Response(content=content, media_type="audio/mpeg", headers=headers, status_code=206)
+            
+            return Response(
+                content=content, 
+                media_type="audio/mpeg",
+                headers={"Accept-Ranges": "bytes", "Content-Length": str(content_length)}
+            )
     except Exception as e:
         print(f"Error fetching generated ad: {str(e)}")
         raise
@@ -205,7 +225,7 @@ async def get_stitched_audio(stitched_audio_id: str):
         raise
 
 @app.get("/stitched-audio/{stitched_audio_id}/bytes")
-async def get_stitched_audio_bytes(stitched_audio_id: str):
+async def get_stitched_audio_bytes(stitched_audio_id: str, range: str = Header(None)):
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -214,7 +234,27 @@ async def get_stitched_audio_bytes(stitched_audio_id: str):
             if not stitched_audio:
                 return {"error": "Stitched audio not found"}, 404
             
-            return Response(content=stitched_audio.audio_bytes, media_type="audio/mpeg")
+            content = stitched_audio.audio_bytes
+            content_length = len(content)
+            
+            if range:
+                start, end = range.replace("bytes=", "").split("-")
+                start = int(start)
+                end = int(end) if end else content_length - 1
+                content = content[start:end + 1]
+                
+                headers = {
+                    "Content-Range": f"bytes {start}-{end}/{content_length}",
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": str(len(content))
+                }
+                return Response(content=content, media_type="audio/mpeg", headers=headers, status_code=206)
+            
+            return Response(
+                content=content, 
+                media_type="audio/mpeg",
+                headers={"Accept-Ranges": "bytes", "Content-Length": str(content_length)}
+            )
     except Exception as e:
         print(f"Error fetching stitched audio bytes: {str(e)}")
         raise
