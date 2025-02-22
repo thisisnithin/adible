@@ -1,0 +1,7 @@
+.vscode
+lib
+.python-version
+*.mp3
+.DS_Store
+.venv
+.env
