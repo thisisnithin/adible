@@ -43,6 +43,7 @@ class GeneratedAdvertisementText(BaseModel):
     segue: str
     content: str
     exit: str
+
 def transcribe_audio_with_timestamps(file_path: str, audio_id: str):
     print(f"Starting transcription for file: {file_path}")
     audio = AudioSegment.from_file(file_path)
