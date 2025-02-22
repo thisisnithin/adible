@@ -1,428 +1,549 @@
 {
     "transcriptions": {
-        "id": "df315834-c1af-49cc-9e34-f76a0c08bf3f",
+        "id": "639565a1-30ba-4607-96c4-b931180708dd",
         "segments": [
             {
+                "no": 0,
                 "start": 0.0,
                 "end": 2.640000104904175,
                 "text": " The Joe Rogan experience."
             },
             {
+                "no": 1,
                 "start": 2.640000104904175,
                 "end": 5.239999771118164,
                 "text": " What is the difference in your preparation?"
             },
             {
+                "no": 2,
                 "start": 5.239999771118164,
                 "end": 9.640000343322754,
                 "text": " Is it just simply who you are as a person, you think?"
             },
             {
+                "no": 3,
                 "start": 9.640000343322754,
                 "end": 12.359999656677246,
                 "text": " Or is it something about the difference in your preparation"
             },
             {
+                "no": 4,
                 "start": 12.359999656677246,
-                "end": 15.319999694824219,
+                "end": 14.359999656677246,
                 "text": " without giving away any secrets, obviously?"
             },
             {
-                "start": 15.319999694824219,
+                "no": 5,
+                "start": 17.040000915527344,
                 "end": 19.200000762939453,
-                "text": " Um, I'm, like, known in the chess world"
+                "text": " I'm like known in the chess world"
             },
             {
+                "no": 6,
                 "start": 19.200000762939453,
-                "end": 21.8799991607666,
-                "text": " for being, like, a little bit lazy, I think."
+                "end": 22.079999923706055,
+                "text": " for being like a little bit lazy, I think."
             },
             {
-                "start": 21.8799991607666,
-                "end": 28.719999313354492,
-                "text": " Uh, the thing is that I, um..."
+                "no": 7,
+                "start": 22.079999923706055,
+                "end": 25.040000915527344,
+                "text": " The thing is that I..."
             },
             {
-                "start": 28.84000015258789,
-                "end": 30.31999969482422,
+                "no": 8,
+                "start": 25.760000228881836,
+                "end": 26.760000228881836,
                 "text": " Can I pause you there?"
             },
             {
-                "start": 30.31999969482422,
-                "end": 31.399999618530273,
-                "text": " What do you mean, lazy?"
+                "no": 9,
+                "start": 26.760000228881836,
+                "end": 27.600000381469727,
+                "text": " Yeah, yeah."
             },
             {
-                "start": 31.399999618530273,
-                "end": 32.439998626708984,
-                "text": " Like, how is that possible?"
+                "no": 10,
+                "start": 27.600000381469727,
+                "end": 28.84000015258789,
+                "text": " What do you mean lazy?"
             },
             {
-                "start": 32.439998626708984,
-                "end": 35.279998779296875,
-                "text": " No, the thing is, like, I've never been the kind of person"
+                "no": 11,
+                "start": 28.84000015258789,
+                "end": 29.68000030517578,
+                "text": " How is that possible?"
             },
             {
-                "start": 35.279998779296875,
-                "end": 39.20000076293945,
-                "text": " who wakes up in the morning, works six, seven hours"
+                "no": 12,
+                "start": 29.68000030517578,
+                "end": 31.760000228881836,
+                "text": " No, the thing is like I've never been"
             },
             {
-                "start": 39.20000076293945,
-                "end": 43.08000183105469,
-                "text": " in chess, like, a normal job."
+                "no": 13,
+                "start": 31.760000228881836,
+                "end": 34.720001220703125,
+                "text": " the kind of person who wakes up in the morning,"
             },
             {
-                "start": 43.08000183105469,
-                "end": 45.040000915527344,
-                "text": " And then, um..."
+                "no": 14,
+                "start": 34.720001220703125,
+                "end": 37.52000045776367,
+                "text": " works six, seven hours in chess,"
             },
             {
-                "start": 45.040000915527344,
-                "end": 47.63999938964844,
+                "no": 15,
+                "start": 37.52000045776367,
+                "end": 40.15999984741211,
+                "text": " like a normal job."
+            },
+            {
+                "no": 16,
+                "start": 40.15999984741211,
+                "end": 41.08000183105469,
+                "text": " And then..."
+            },
+            {
+                "no": 17,
+                "start": 42.279998779296875,
+                "end": 44.439998626708984,
                 "text": " Because a lot of them study computers and stuff."
             },
             {
-                "start": 47.63999938964844,
-                "end": 48.15999984741211,
-                "text": " Exactly."
+                "no": 18,
+                "start": 44.439998626708984,
+                "end": 45.279998779296875,
+                "text": " Yeah, exactly."
             },
             {
-                "start": 48.15999984741211,
-                "end": 51.439998626708984,
-                "text": " Like, I think about the game all the time."
+                "no": 19,
+                "start": 45.279998779296875,
+                "end": 48.599998474121094,
+                "text": " Like I think about the game all the time."
             },
             {
-                "start": 51.439998626708984,
-                "end": 52.7599983215332,
-                "text": " Like, I play online."
+                "no": 20,
+                "start": 48.599998474121094,
+                "end": 52.79999923706055,
+                "text": " Like I play online, I look at games,"
             },
             {
-                "start": 52.7599983215332,
-                "end": 55.47999954223633,
-                "text": " I look at games."
+                "no": 21,
+                "start": 53.63999938964844,
+                "end": 56.79999923706055,
+                "text": " I look at games, I may read something."
             },
             {
-                "start": 55.47999954223633,
-                "end": 56.84000015258789,
-                "text": " I may read something."
-            },
-            {
-                "start": 56.84000015258789,
-                "end": 58.52000045776367,
+                "no": 22,
+                "start": 56.79999923706055,
+                "end": 58.439998626708984,
                 "text": " Do you ever play anonymously?"
             },
             {
-                "start": 58.52000045776367,
-                "end": 61.91999816894531,
+                "no": 23,
+                "start": 58.439998626708984,
+                "end": 60.880001068115234,
                 "text": " I used to do that all the time."
             },
             {
-                "start": 61.91999816894531,
-                "end": 64.36000061035156,
+                "no": 24,
+                "start": 61.880001068115234,
+                "end": 63.31999969482422,
                 "text": " What a bloodbath that must be."
             },
             {
-                "start": 64.36000061035156,
+                "no": 25,
+                "start": 63.31999969482422,
+                "end": 64.16000366210938,
+                "text": " Yeah."
+            },
+            {
+                "no": 26,
+                "start": 66.55999755859375,
                 "end": 69.91999816894531,
                 "text": " But I think I got humbled one time"
             },
             {
+                "no": 27,
                 "start": 69.91999816894531,
-                "end": 73.87999725341797,
-                "text": " by this Russian grandmaster who asked..."
+                "end": 73.83999633789062,
+                "text": " by this Russian grandmaster who asked,"
             },
             {
-                "start": 73.87999725341797,
+                "no": 28,
+                "start": 73.83999633789062,
                 "end": 76.31999969482422,
-                "text": " Somebody else asked me, like, if a certain account"
+                "text": " somebody else asked me like if a certain account"
             },
             {
+                "no": 29,
                 "start": 76.31999969482422,
-                "end": 77.95999908447266,
+                "end": 77.91999816894531,
                 "text": " on a certain website was me."
             },
             {
-                "start": 77.95999908447266,
+                "no": 30,
+                "start": 77.91999816894531,
                 "end": 81.4000015258789,
-                "text": " And I was like, yeah, um, I don't know."
+                "text": " And I was like, yeah, I don't know."
             },
             {
-                "start": 81.4000015258789,
+                "no": 31,
+                "start": 81.76000213623047,
                 "end": 83.12000274658203,
-                "text": " Like, I don't know who that is."
+                "text": " I don't know who that is."
             },
             {
+                "no": 32,
                 "start": 83.12000274658203,
                 "end": 85.72000122070312,
-                "text": " And this guy went, like, yes, that is you."
+                "text": " And this guy went like, yes, that is you."
             },
             {
+                "no": 33,
                 "start": 85.72000122070312,
-                "end": 88.16000366210938,
-                "text": " And he listed up, like, five other accounts"
+                "end": 88.19999694824219,
+                "text": " And he listed up like five other accounts"
             },
             {
-                "start": 88.16000366210938,
-                "end": 92.4800033569336,
-                "text": " that I thought nobody knew about that were also me."
+                "no": 34,
+                "start": 88.19999694824219,
+                "end": 90.12000274658203,
+                "text": " that I thought nobody knew about."
             },
             {
-                "start": 92.4800033569336,
+                "no": 35,
+                "start": 90.12000274658203,
+                "end": 90.95999908447266,
+                "text": " Oh, wow."
+            },
+            {
+                "no": 36,
+                "start": 90.95999908447266,
+                "end": 92.55999755859375,
+                "text": " That were also me."
+            },
+            {
+                "no": 37,
+                "start": 92.55999755859375,
                 "end": 93.4000015258789,
                 "text": " By the way you play?"
             },
             {
+                "no": 38,
                 "start": 93.4000015258789,
-                "end": 99.08000183105469,
+                "end": 98.4000015258789,
                 "text": " Yeah, I think it's playing strength, playing style."
             },
             {
-                "start": 99.08000183105469,
-                "end": 101.0,
+                "no": 39,
+                "start": 99.12000274658203,
+                "end": 101.04000091552734,
                 "text": " Because I tried to switch up my openings"
             },
             {
-                "start": 101.0,
-                "end": 104.36000061035156,
-                "text": " on different accounts to not make it obvious that it's me."
+                "no": 40,
+                "start": 101.04000091552734,
+                "end": 103.23999786376953,
+                "text": " on different accounts to not make it obvious"
             },
             {
-                "start": 104.36000061035156,
-                "end": 107.12000274658203,
-                "text": " And I have, like, a style where I switch that up a lot."
+                "no": 41,
+                "start": 103.23999786376953,
+                "end": 104.4000015258789,
+                "text": " that it's me."
             },
             {
-                "start": 107.12000274658203,
-                "end": 108.63999938964844,
+                "no": 42,
+                "start": 104.4000015258789,
+                "end": 107.16000366210938,
+                "text": " And I have like a style where I switch that up a lot."
+            },
+            {
+                "no": 43,
+                "start": 107.16000366210938,
+                "end": 108.68000030517578,
                 "text": " So it makes it a bit easier."
             },
             {
-                "start": 108.63999938964844,
-                "end": 112.95999908447266,
-                "text": " But I think you could just tell by the playing style."
+                "no": 44,
+                "start": 108.68000030517578,
+                "end": 110.5199966430664,
+                "text": " But I think you could just tell by..."
             },
             {
-                "start": 112.95999908447266,
-                "end": 114.68000030517578,
+                "no": 45,
+                "start": 111.44000244140625,
+                "end": 113.0,
+                "text": " By the playing style, so."
+            },
+            {
+                "no": 46,
+                "start": 113.0,
+                "end": 114.23999786376953,
                 "text": " That is crazy."
             },
             {
-                "start": 114.68000030517578,
-                "end": 119.95999908447266,
-                "text": " These days, I just, I play with my own name."
+                "no": 47,
+                "start": 114.23999786376953,
+                "end": 119.04000091552734,
+                "text": " These days I just, I play with my own name."
             },
             {
+                "no": 0,
                 "start": 120.0,
                 "end": 123.20000004768372,
                 "text": " Like I'm I don't really care about that anymore. Yeah"
             },
             {
-                "start": 124.32000017166138,
+                "no": 1,
+                "start": 124.3600001335144,
                 "end": 125.67999982833862,
                 "text": " so"
             },
             {
+                "no": 2,
                 "start": 125.67999982833862,
                 "end": 132.7200002670288,
                 "text": " Do most professional players study chess all day long at the highest level? I think"
             },
             {
-                "start": 133.19999980926514,
+                "no": 3,
+                "start": 133.23999977111816,
                 "end": 134.47999954223633,
                 "text": " I"
             },
             {
+                "no": 4,
                 "start": 134.47999954223633,
                 "end": 139.0,
                 "text": " Think quite a few do I I mean, I don't know"
             },
             {
+                "no": 5,
                 "start": 139.55999946594238,
                 "end": 144.52000045776367,
-                "text": " Like people's day-to-day activities. So you guys don't talk about it. Not that much"
+                "text": " Like people's day-to-day activities, so you guys don't talk about it. Not that much"
             },
             {
+                "no": 6,
                 "start": 145.20000076293945,
                 "end": 148.95999908447266,
                 "text": " The people that I've worked with they certainly study chess a lot"
             },
             {
+                "no": 7,
                 "start": 149.55999946594238,
                 "end": 151.55999946594238,
                 "text": " But others I'm not quite sure"
             },
             {
+                "no": 8,
                 "start": 152.52000045776367,
                 "end": 160.2400016784668,
                 "text": " the thing is that chess has always like still been a bit of a hobby for me that once it start starts to feel like"
             },
             {
+                "no": 9,
                 "start": 160.2400016784668,
                 "end": 161.7599983215332,
                 "text": " work then"
             },
             {
+                "no": 10,
                 "start": 161.7599983215332,
                 "end": 163.5999984741211,
                 "text": " it's it's"
             },
             {
+                "no": 11,
                 "start": 163.5999984741211,
                 "end": 167.20000076293945,
                 "text": " It's it's harder for me. I had I had a chess coach when I was"
             },
             {
+                "no": 12,
                 "start": 167.9199981689453,
                 "end": 170.36000061035156,
                 "text": " When I was little I I went to have sessions"
             },
             {
+                "no": 13,
                 "start": 170.9199981689453,
                 "end": 174.95999908447266,
                 "text": " once a week, which I loved and then he started giving me homework and"
             },
             {
+                "no": 14,
                 "start": 175.0800018310547,
                 "end": 176.72000122070312,
                 "text": " And"
             },
             {
+                "no": 15,
                 "start": 176.72000122070312,
                 "end": 182.31999969482422,
                 "text": " Yeah, I I told him like quickly like I I don't like I don't like homework, but I would"
             },
             {
+                "no": 16,
                 "start": 184.0,
                 "end": 190.4000015258789,
                 "text": " But I would still spend a lot of time like reading books playing like this the things that I still do"
             },
             {
+                "no": 17,
                 "start": 190.4000015258789,
                 "end": 191.5199966430664,
                 "text": " But I would do them for fun"
             },
             {
+                "no": 18,
                 "start": 191.5199966430664,
                 "end": 196.63999938964844,
                 "text": " And that was the difference between me and the other kids is that they would go to chess practice"
             },
             {
+                "no": 19,
                 "start": 196.63999938964844,
                 "end": 200.16000366210938,
                 "text": " They would maybe even do their homework, but they weren't living and breathing"
             },
             {
+                "no": 20,
                 "start": 201.1999969482422,
-                "end": 203.5999984741211,
+                "end": 203.55999755859375,
                 "text": " sort of the game that that"
             },
             {
+                "no": 21,
                 "start": 204.12000274658203,
-                "end": 209.8000030517578,
-                "text": " In the way that I was like I think about it all the time like I'm thinking about the game while I'm sitting on on"
+                "end": 209.4000015258789,
+                "text": " In the way that I was like I think about it all the time like I'm thinking about the game while I'm sitting on"
             },
             {
-                "start": 209.8000030517578,
+                "no": 22,
+                "start": 209.63999938964844,
                 "end": 216.83999633789062,
                 "text": " This chair like I'm still analyzing a game that I played today like it never goes completely out of out of my mind"
             },
             {
-                "start": 217.4000015258789,
+                "no": 23,
+                "start": 217.36000061035156,
                 "end": 218.44000244140625,
                 "text": " and"
             },
             {
+                "no": 24,
                 "start": 218.44000244140625,
                 "end": 225.83999633789062,
-                "text": " I think a lot of very good chess players do that, but like casual chess players. No of course so maybe the thing is"
+                "text": " I think a lot of very good chess players do that but like casual chess players. No of course so maybe the thing is"
             },
             {
+                "no": 25,
                 "start": 226.63999938964844,
                 "end": 228.63999938964844,
                 "text": " discipline versus enthusiasm"
             },
             {
+                "no": 26,
                 "start": 229.68000030517578,
                 "end": 232.16000366210938,
                 "text": " enthusiasm causes obsession and"
             },
             {
+                "no": 27,
                 "start": 232.16000366210938,
                 "end": 239.9199981689453,
                 "text": " Enjoyment which probably leads to better retention of information whereas just pure discipline for the sake of like I"
             },
             {
+                "no": 0,
                 "start": 240.0,
                 "end": 242.07999992370605,
                 "text": " I have to do the work in order to get better."
             },
             {
+                "no": 1,
                 "start": 242.07999992370605,
                 "end": 244.3600001335144,
                 "text": " You're missing this enjoyment."
             },
             {
+                "no": 2,
                 "start": 244.3600001335144,
                 "end": 246.4800000190735,
                 "text": " You're missing this enthusiasm for it"
             },
             {
+                "no": 3,
                 "start": 246.4800000190735,
                 "end": 248.76000022888184,
                 "text": " that you have managed to,"
             },
             {
+                "no": 4,
                 "start": 248.76000022888184,
                 "end": 250.8400001525879,
                 "text": " although absorbing so much information"
             },
             {
+                "no": 5,
                 "start": 250.8400001525879,
                 "end": 252.07999992370605,
                 "text": " and playing all the time,"
             },
             {
+                "no": 6,
                 "start": 252.07999992370605,
                 "end": 254.96000003814697,
                 "text": " you've managed to keep it playful and fun."
             },
             {
+                "no": 7,
                 "start": 254.96000003814697,
                 "end": 255.80000019073486,
                 "text": " I think so."
             },
             {
+                "no": 8,
                 "start": 255.80000019073486,
                 "end": 259.04000091552734,
                 "text": " I think this is definitely the way that works for me."
             },
             {
+                "no": 9,
                 "start": 259.04000091552734,
                 "end": 260.4400005340576,
                 "text": " Maybe for others."
             },
             {
+                "no": 10,
                 "start": 261.2800006866455,
                 "end": 262.3199996948242,
                 "text": " I think for anybody."
             },
             {
+                "no": 11,
                 "start": 262.3199996948242,
                 "end": 263.95999908447266,
                 "text": " Like, if you want to be great at something,"
             },
             {
+                "no": 12,
                 "start": 263.95999908447266,
                 "end": 265.20000076293945,
                 "text": " you have to be obsessed with it."
             },
             {
+                "no": 13,
                 "start": 265.20000076293945,
                 "end": 266.04000091552734,
                 "text": " Yes."
             },
             {
+                "no": 14,
                 "start": 266.04000091552734,
                 "end": 269.2800006866455,
                 "text": " And yeah, it has to come from within."
