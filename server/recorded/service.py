@@ -9,7 +9,7 @@ from domain.transcription_segments import TranscriptionSegmentDb, get_transcript
 from domain.common import ProcessingStatus
 from domain.generated_ad import GeneratedAd, get_generated_ad_by_id, insert_generated_ad
 from domain.advertisement import get_advertisements
-from domain.stitched_audio import StitchedAudio, insert_stitched_audio, update_stitched_audio_bytes, update_stitched_audio_status
+from domain.stitched_audio import update_stitched_audio_bytes, update_stitched_audio_status
 
 def process_audio_file_and_generate_advertisements(audio_file_id: str):
     print(f"Starting processing for audio file {audio_file_id}")
