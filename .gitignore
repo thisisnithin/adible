@@ -172,3 +172,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+**/*.json
+
+**/bertqa-572ad-6d4781a0aee7.json
