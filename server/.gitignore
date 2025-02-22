@@ -1,3 +1,10 @@
+.vscode
+lib
+.python-version
+*.mp3
+.DS_Store
+.venv
+.env
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
