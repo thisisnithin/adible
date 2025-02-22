@@ -13,6 +13,7 @@ class GeneratedAd(BaseModel):
     audio_bytes: bytes
     audio_file_id: str
     processing_status: ProcessingStatus
+    transcription_segment_id: str
 
 def row_to_generated_ad(row) -> GeneratedAd:
     return GeneratedAd(
@@ -22,16 +23,17 @@ def row_to_generated_ad(row) -> GeneratedAd:
         exit=row['exit'],
         audio_bytes=row['audio_bytes'],
         audio_file_id=row['audio_file_id'],
-        processing_status=ProcessingStatus(row['processing_status'])
+        processing_status=ProcessingStatus(row['processing_status']),
+        transcription_segment_id=row['transcription_segment_id']
     )
 
 def insert_generated_ad(cursor: Cursor, ad: GeneratedAd) -> int:
     query = """
-    INSERT INTO generated_ads (id, segue, content, exit, audio_bytes, audio_file_id, processing_status)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO generated_ads (id, segue, content, exit, audio_bytes, audio_file_id, processing_status, transcription_segment_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """
     cursor.execute(query, (ad.id, ad.segue, ad.content, ad.exit, ad.audio_bytes, 
-                          ad.audio_file_id, ad.processing_status))
+                          ad.audio_file_id, ad.processing_status, ad.transcription_segment_id))
     return cursor.lastrowid
 
 def update_ad_status(cursor: Cursor, ad_id: int, status: ProcessingStatus):
