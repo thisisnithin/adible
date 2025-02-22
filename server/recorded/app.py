@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from pydantic import BaseModel
 import uvicorn
 import uuid
@@ -7,6 +7,7 @@ import os
 from db import get_db_connection
 from domain.audio_file import AudioFile, insert_audio_file
 from domain.common import ProcessingStatus
+from server.recorded.service import process_audio_file_and_generate_advertisements
 
 app = FastAPI()
 
@@ -23,7 +24,7 @@ async def create_item(item: Item):
     return ResponseModel(message="Item received", item=item)
 
 @app.post("/upload-audio/", status_code=201)
-async def upload_audio(file: UploadFile = File(...)):
+async def upload_audio(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     file_bytes = await file.read()
     
     audio_file = AudioFile(
@@ -36,6 +37,8 @@ async def upload_audio(file: UploadFile = File(...)):
         cursor = conn.cursor()
         insert_audio_file(cursor, audio_file)
         conn.commit()
+    
+    background_tasks.add_task(process_audio_file_and_generate_advertisements, audio_file.id)
     
     return {"id": audio_file.id}
 
