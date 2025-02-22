@@ -10,12 +10,14 @@ from domain.common import ProcessingStatus
 from domain.generated_ad import GeneratedAd, get_generated_ad_by_id, insert_generated_ad
 from domain.advertisement import get_advertisements
 from domain.stitched_audio import update_stitched_audio_bytes, update_stitched_audio_status
+from utils import sync_sheet_to_db
 
 def process_audio_file_and_generate_advertisements(audio_file_id: str):
     print(f"Starting processing for audio file {audio_file_id}")
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
+            sync_sheet_to_db(cursor)
             audio_file = get_audio_file_by_id(cursor, audio_file_id)
             if not audio_file:
                 raise ValueError(f"Audio file with id {audio_file_id} not found")
