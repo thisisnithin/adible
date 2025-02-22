@@ -8,6 +8,7 @@ from pydub import AudioSegment
 import json
 from uuid import uuid4
 from elevenlabs.client import ElevenLabs
+from elevenlabs import play
 import xml.etree.ElementTree as ET
 
 load_dotenv()
@@ -35,6 +36,10 @@ class TranscriptionSegment(BaseModel):
 class AdvertisementPlacement(BaseModel):
     transcription_segment: TranscriptionSegment
     determined_advertisement: Advertisement
+
+class GeneratedAdvertisementText(BaseModel):
+    segue: str
+    content: str
 
 def transcribe_audio_with_timestamps(file_path: str, audio_id: str):
     print(f"Starting transcription for file: {file_path}")
@@ -231,7 +236,18 @@ def load_transcription_segments(transcription_state_path: str) -> List[Transcrip
         ))
     return segments
 
-def _generate_advertisement_text(ad_placement: AdvertisementPlacement, surrounding_segments: list[TranscriptionSegment]) -> str:
+def parse_advertisement_xml(xml_content: str) -> List[GeneratedAdvertisementText]:
+    root = ET.fromstring(xml_content)
+    advertisements = []
+
+    for ad in root.findall('.//advertisement'):
+        segue = ad.find('segue').text
+        content = ad.find('content').text
+        advertisements.append(GeneratedAdvertisementText(segue=segue, content=content))
+
+    return advertisements
+
+def _generate_advertisement_text(ad_placement: AdvertisementPlacement, surrounding_segments: list[TranscriptionSegment]) -> List[GeneratedAdvertisementText]:
 
     ad_placement_xml = f"""
 <advertisement_placement>
@@ -273,9 +289,16 @@ Here are the surrounding segments of the audio recording:
 {surrounding_segments_xml}
 </surrounding_segments>
 
+Please follow the below rules when generating the advertisements:
+1. The advertisement should be a part of the conversation and not intrusive.
+2. The advertisement content should be very short and to the point.
+3. The ending of the advertisement should be a segue back to the show.
+4. Always provide three variations of the same advertisement.
+
 Please respond in the format provided between the <example></example> tags.
 <example>
 <response>
+<advertisements>
 <advertisement>
 <segue>
 finnse your way here
@@ -284,6 +307,7 @@ finnse your way here
 keep it short and concise
 </content>
 </advertisement>
+</advertisements>
 </response>
 </example>
 """
@@ -294,7 +318,7 @@ keep it short and concise
         stop=["</response>"]
     )
 
-    return response.choices[0].message.content
+    return parse_advertisement_xml(response.choices[0].message.content)
     
 
 def generate_advertisement(ad_placement: AdvertisementPlacement, transcription_segments: list[TranscriptionSegment]) -> str:  
@@ -309,6 +333,16 @@ def generate_advertisement(ad_placement: AdvertisementPlacement, transcription_s
     advertisement_text = _generate_advertisement_text(ad_placement, surrounding_segments)
 
     return advertisement_text
+
+def generate_advertisement_audio(advertisement_text: str) -> str:
+    elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
+    audio_response = elevenlabs_client.text_to_speech.convert(
+        text=advertisement_text,
+        voice_id="JBFqnCBsd6RMkjVDRZzb",
+        model_id="eleven_multilingual_v2",
+        output_format="mp3_44100_128"
+    )
+    play(audio_response)
 
 # Transcription
 # transcribe_audio_with_timestamps("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3", str(uuid4()))
