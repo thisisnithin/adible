@@ -44,3 +44,18 @@ def get_generated_ads(cursor: Cursor) -> list[GeneratedAd]:
     query = "SELECT * FROM generated_ads"
     rows = cursor.execute(query).fetchall()
     return [row_to_generated_ad(row) for row in rows]
+
+def get_generated_ads_by_segment_id(cursor: Cursor, segment_id: str) -> list[GeneratedAd]:
+    query = "SELECT * FROM generated_ads WHERE transcription_segment_id = ?"
+    rows = cursor.execute(query, (segment_id,)).fetchall()
+    return [row_to_generated_ad(row) for row in rows]
+
+def get_generated_ads_by_audio_file_id(cursor: Cursor, audio_file_id: str) -> list[GeneratedAd]:
+    query = "SELECT * FROM generated_ads WHERE audio_file_id = ?"
+    rows = cursor.execute(query, (audio_file_id,)).fetchall() 
+    return [row_to_generated_ad(row) for row in rows]
+
+def get_generated_ad_by_id(cursor: Cursor, ad_id: str) -> GeneratedAd:
+    query = "SELECT * FROM generated_ads WHERE id = ?"
+    row = cursor.execute(query, (ad_id,)).fetchone()
+    return row_to_generated_ad(row) if row else None

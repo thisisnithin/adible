@@ -349,16 +349,18 @@ def generate_advertisements(ad_placement: AdvertisementPlacement, transcription_
 
     return advertisement_texts
 
-def generate_advertisement_audio(advertisement_text: str) -> str:
+def generate_advertisement_audio(advertisement_text: str, voice_id: str = "JBFqnCBsd6RMkjVDRZzb", file_path: str = None) -> str:
     elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
     audio_response = elevenlabs_client.text_to_speech.convert(
         text=advertisement_text,
-        voice_id="JBFqnCBsd6RMkjVDRZzb",
+        voice_id=voice_id,
         model_id="eleven_multilingual_v2",
         output_format="mp3_44100_128"
     )
     
     save_file_path = f"{uuid.uuid4()}.mp3"
+    if file_path:
+        save_file_path = file_path
     
     with open(save_file_path, "wb") as f:
         for chunk in audio_response:
