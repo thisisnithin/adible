@@ -269,35 +269,35 @@ Here are some examples of how you can finnse the advertisement placement:
 <examples>
 <advertisement>
 <segue>
-Considering how much everything else has gone up over the last few years like haircuts I guess we shouldn't be too surprised even if it is a tough pill to swallow like today's segue to our sponsor, The Big Thunder Game.. (advertisement content here)
+Considering how much everything else has gone up over the last few years<break time="0.1s" /> like haircuts I guess we shouldn't be too surprised even if it is a tough pill to swallow like today's segue to our sponsor,<break time="0.1s" /> The Big Thunder Game.. (advertisement content here)
 </segue>
 <content>
 The Big Thunder Game brings an exciting new way to play MMORPGs with friends regardless of their ability to play.
 </content>
 <exit>
-(add some context here that continues to the next segment), now back to the show.
+(add some context here that continues to the next segment),<break time="0.2s" /> now back to the show.
 </exit>
 </advertisement>
 <advertisement>
 <segue>
-if you're planning your next PC build then consider checking out our sponsor VIP SCD key
+if you're planning your next PC build<break time="0.1s" /> then consider checking out our sponsor VIP SCD key
 </segue>
 <content>
-Their Windows 10 and 11 OEM Keys sell for a fraction of retail and will unlock the full potential of your OS it'll also remove.. (more content here)
+Their Windows 10 and 11 OEM Keys sell for a fraction of retail <break time="0.1s" /> and will unlock the full potential of your OS it'll also remove.. (more content here)
 </content>
 <exit>
-use VIP SCD key on your next PC build and now lets get back to this PC.
+use VIP SCD key on your next PC build <break time="0.2s" /> and now lets get back to this PC.
 </exit>
 </advertisement>
 <advertisement>
 <segue>
-क्या आप रचनात्मकता और मज़े की तलाश में हैं? तो आइए जानते हैं हमारे प्रायोजक LEGO के बारे में
+क्या आप रचनात्मकता और मज़े की तलाश में हैं? <break time="0.1s" /> तो आइए जानते हैं हमारे प्रायोजक LEGO के बारे में
 </segue>
 <content>
-LEGO के नए साहसिक सेट्स के साथ अपनी कल्पना को उड़ान दें। हर सेट में उच्च गुणवत्ता वाले ब्रिक्स, विस्तृत निर्देश पुस्तिका, और असीमित रचनात्मक संभावनाएं हैं। चाहे आप शुरुआती बिल्डर हों या अनुभवी LEGO प्रेमी, हमारे पास हर कौशल स्तर के लिए सेट हैं। इस महीने के विशेष ऑफर में सभी LEGO सिटी और LEGO टेकनिक सेट्स पर 20% की छूट पाएं। साथ ही, VIP सदस्यों के लिए अतिरिक्त बोनस प्वाइंट्स!
+LEGO के नए साहसिक सेट्स के साथ अपनी कल्पना को उड़ान दें। <break time="0.1s" /> हर सेट में उच्च गुणवत्ता वाले ब्रिक्स, विस्तृत निर्देश पुस्तिका, और असीमित रचनात्मक संभावनाएं हैं। चाहे आप शुरुआती बिल्डर हों या अनुभवी LEGO प्रेमी, हमारे पास हर कौशल स्तर के लिए सेट हैं। इस महीने के विशेष ऑफर में सभी LEGO सिटी और LEGO टेकनिक सेट्स पर 20% की छूट पाएं। साथ ही, <break time="0.1s" /> VIP सदस्यों के लिए अतिरिक्त बोनस प्वाइंट्स!
 </content>
 <exit>
-LEGO के साथ अपनी रचनात्मक यात्रा शुरू करें, और अब वापस लौटते हैं हमारी मुख्य कहानी की ओर।
+LEGO के साथ अपनी रचनात्मक यात्रा शुरू करें,<break time="0.1s" /> और अब वापस लौटते हैं हमारी मुख्य कहानी की ओर।
 </exit>
 </advertisement>
 </examples>
