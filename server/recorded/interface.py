@@ -9,6 +9,9 @@ import json
 from elevenlabs.client import ElevenLabs
 from elevenlabs import play
 import xml.etree.ElementTree as ET
+import uuid
+
+from pydub.playback import play as play_audio
 
 load_dotenv()
 
@@ -341,7 +344,17 @@ def generate_advertisement_audio(advertisement_text: str) -> str:
         model_id="eleven_multilingual_v2",
         output_format="mp3_44100_128"
     )
-    play(audio_response)
+    
+    save_file_path = f"{uuid.uuid4()}.mp3"
+    
+    with open(save_file_path, "wb") as f:
+        for chunk in audio_response:
+            if chunk:
+                f.write(chunk)
+    
+    print(f"Audio file saved at {save_file_path}")
+    
+    return save_file_path
 
 # Transcription
 # transcribe_audio_with_timestamps("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3", str(uuid4()))
@@ -355,5 +368,31 @@ print(f"Possible Ad Placements: {ad_placements}")
 generated_advertisement_texts = generate_advertisements(ad_placements[0], transcription_segments)
 print(f"Generated Advertisement Texts: {generated_advertisement_texts}")
 
-for generated_advertisement_text in generated_advertisement_texts:
-    generate_advertisement_audio(generated_advertisement_text.segue + " " + generated_advertisement_text.content)
+advertisement_audio_path = generate_advertisement_audio(generated_advertisement_texts[0].segue + " " + generated_advertisement_texts[0].content)
+
+
+# EXPERIMENTAL TESTING
+target_segment = ad_placements[0].transcription_segment
+starting_segment = None
+for segment in transcription_segments:
+    if segment.no == target_segment.no - 2:
+        starting_segment = segment
+        break
+
+next_segment = None
+for segment in transcription_segments:
+    if segment.no == target_segment.no + 1:
+        next_segment = segment
+        break
+
+original_audio = AudioSegment.from_file("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3")
+
+start_time_ms = starting_segment.start * 1000
+end_time_ms = target_segment.end * 1000
+play_audio(original_audio[start_time_ms:end_time_ms])
+
+ad_audio = AudioSegment.from_file(advertisement_audio_path)
+play_audio(ad_audio)
+
+next_start_time_ms = next_segment.start * 1000
+play_audio(original_audio[next_start_time_ms:])
