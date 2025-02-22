@@ -231,6 +231,85 @@ def load_transcription_segments(transcription_state_path: str) -> List[Transcrip
         ))
     return segments
 
+def _generate_advertisement_text(ad_placement: AdvertisementPlacement, surrounding_segments: list[TranscriptionSegment]) -> str:
+
+    ad_placement_xml = f"""
+<advertisement_placement>
+    <transcription_segment no='{ad_placement.transcription_segment.no}'>
+        <text>{ad_placement.transcription_segment.text}</text>
+    </transcription_segment>
+    <advertisement>
+        <title>{ad_placement.determined_advertisement.title}</title>
+        <content>{ad_placement.determined_advertisement.content}</content>
+    </advertisement>
+</advertisement_placement>
+"""
+    
+    surrounding_segments_xml = "\n".join([
+        f"<transcription_segment no='{segment.no}'>"
+        f"<text>{segment.text}</text>"
+        f"</transcription_segment>"
+    for segment in surrounding_segments])
+
+
+    prompt = f"""
+You are a natural performance marketing expert. You know you way around the ad placment space. The finesse you have with ad placement is such that you can fit any advertisement into a segment of a podcast, youtube video, or any other recorded audio.
+You will be given the advertisement placement and the surrounding segments of the audio recording.
+Your job is to finnse the advertisement placement such that it is a part of the conversation and is not intrusive.
+
+Here are some examples of how you can finnse the advertisement placement:
+<example_advertisement_segue>
+Considering how much everything else has gone up over the last few years like haircuts I guess we shouldn't be too surprised even if it is a tough pill to swallow like today's segue to our sponsor, The Big Thunder Game.. (advertisement content here)
+and back to the show.
+</example_advertisement_segue>
+
+Here is the advertisement placement:
+<advertisement_placement>
+    {ad_placement_xml}
+</advertisement_placement>
+
+Here are the surrounding segments of the audio recording:
+<surrounding_segments>
+{surrounding_segments_xml}
+</surrounding_segments>
+
+Please respond in the format provided between the <example></example> tags.
+<example>
+<response>
+<advertisement>
+<segue>
+finnse your way here
+</segue>
+<content>
+keep it short and concise
+</content>
+</advertisement>
+</response>
+</example>
+"""
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}, {"role": "assistant", "content": "<response>"}],
+        stop=["</response>"]
+    )
+
+    return response.choices[0].message.content
+    
+
+def generate_advertisement(ad_placement: AdvertisementPlacement, transcription_segments: list[TranscriptionSegment]) -> str:  
+    surrounding_segments = []
+    segment_nos = {segment.no: segment for segment in transcription_segments}
+
+    for offset in [-2, -1, 1, 2]:
+        target_no = ad_placement.transcription_segment.no + offset
+        if target_no in segment_nos:
+            surrounding_segments.append(segment_nos[target_no])
+
+    advertisement_text = _generate_advertisement_text(ad_placement, surrounding_segments)
+
+    return advertisement_text
+
 # Transcription
 # transcribe_audio_with_timestamps("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3", str(uuid4()))
 
@@ -239,3 +318,6 @@ transcription_segments = load_transcription_segments("transcription_state.json")
 ad_placements = determine_ad_placement(transcription_segments)
 
 print(f"Possible Ad Placements: {ad_placements}")
+
+advertisement_text = generate_advertisement(ad_placements[0], transcription_segments)
+print(f"Advertisement Text: {advertisement_text}")
