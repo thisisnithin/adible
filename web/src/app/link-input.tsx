@@ -34,7 +34,13 @@ const LinkInput = () => {
   };
 
   return (
-    <div className="relative w-full max-w-xl">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleCrawl();
+      }}
+      className="relative w-full max-w-xl"
+    >
       <div className="absolute top-2 left-0 flex items-center pl-3 pointer-events-none">
         <GlobeIcon className="w-5 h-5 text-gray-400" />
       </div>
@@ -47,12 +53,11 @@ const LinkInput = () => {
       />
       {!loading ? (
         <Button
-          type="button"
+          type="submit"
           variant="ghost"
           size="icon"
           className="absolute inset-y-0 right-0 flex items-center"
           disabled={!url}
-          onClick={() => handleCrawl()}
         >
           <ArrowRight className="w-5 h-5" />
           <span className="sr-only">Search</span>
@@ -83,7 +88,7 @@ const LinkInput = () => {
           <span>Optimizing crawl data...</span>
         </TextLoop>
       )}
-    </div>
+    </form>
   );
 };
 

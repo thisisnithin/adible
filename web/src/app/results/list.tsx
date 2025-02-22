@@ -3,6 +3,7 @@
 import { useReadLocalStorage } from "usehooks-ts";
 import { crawlForAds } from "../crawl";
 import { useEffect, useState } from "react";
+import { ExternalLinkIcon } from "lucide-react";
 
 export default function List() {
   const result =
@@ -27,10 +28,15 @@ export default function List() {
   }
 
   return result.map((ad, index) => (
-    <div key={index} className="p-4 border-b last:border-b-0 space-y-6">
+    <div key={index} className="p-4 border-b last:border-b-0">
       <h2 className="text-lg font-bold">{ad.title}</h2>
-      <a href={ad.url} target="_blank" className="underline">
+      <a
+        href={ad.url}
+        target="_blank"
+        className="underline flex items-center gap-2 mb-6 text-muted-foreground"
+      >
         {ad.url}
+        <ExternalLinkIcon className="w-4 h-4" />
       </a>
       <p className="text-muted-foreground">{ad.content}</p>
     </div>
