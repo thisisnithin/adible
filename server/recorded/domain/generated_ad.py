@@ -3,7 +3,7 @@ from typing import Optional
 from uuid import uuid4
 from pydantic import BaseModel
 
-from server.recorded.domain.common import ProcessingStatus
+from domain.common import ProcessingStatus
 
 class GeneratedAd(BaseModel):
     id: Optional[str] = str(uuid4())

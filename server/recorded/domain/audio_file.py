@@ -3,7 +3,7 @@ from uuid import uuid4
 from sqlite3 import Cursor
 from pydantic import BaseModel
 
-from server.recorded.domain.common import ProcessingStatus
+from domain.common import ProcessingStatus
 
 class AudioFile(BaseModel):
     id: Optional[str] = str(uuid4())
