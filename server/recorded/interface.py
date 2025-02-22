@@ -22,7 +22,7 @@ client = OpenAI(
 )
 
 class Advertisement(BaseModel):
-    id: int
+    id: str
     url: str
     title: str
     content: str
@@ -186,12 +186,9 @@ def _determine_ad_placement(transcription_segments: list[TranscriptionSegment], 
     return ad_placements
 
 
-def determine_ad_placement(transcription_segments: list[TranscriptionSegment]) -> List[AdvertisementPlacement]:
+def determine_ad_placement(transcription_segments: list[TranscriptionSegment], available_ads: list[Advertisement]) -> List[AdvertisementPlacement]:
     print("Determining ad placement...")
     print(f"Total transcription segments: {len(transcription_segments)}")
-
-    available_ads = _load_tsv_as_advertisements("target_ads.tsv")
-
     print(f"Total available ads: {len(available_ads)}")
 
     ad_placements = _determine_ad_placement(transcription_segments, available_ads)

@@ -8,6 +8,7 @@ from interface import determine_ad_placement, generate_advertisement_audio, gene
 from domain.transcription_segments import TranscriptionSegmentDb, insert_transcription_segment
 from domain.common import ProcessingStatus
 from domain.generated_ad import GeneratedAd, insert_generated_ad
+from domain.advertisement import get_advertisements
 
 def process_audio_file_and_generate_advertisements(audio_file_id: str):
     print(f"Starting processing for audio file {audio_file_id}")
@@ -47,7 +48,9 @@ def process_audio_file_and_generate_advertisements(audio_file_id: str):
 
             conn.commit()
 
-            ad_placements = determine_ad_placement(transcription_segments)
+            available_ads = get_advertisements(cursor)
+
+            ad_placements = determine_ad_placement(transcription_segments, available_ads)
 
             print(f"Possible Ad Placements: {ad_placements}")
 
@@ -72,7 +75,8 @@ def process_audio_file_and_generate_advertisements(audio_file_id: str):
                         audio_bytes=advertisement_audio_bytes,
                         audio_file_id=audio_file_id,
                         processing_status=ProcessingStatus.COMPLETE,
-                        transcription_segment_id=transcription_segment_id
+                        transcription_segment_id=transcription_segment_id,
+                        advertisement_id=ad_placement.determined_advertisement.id
                     )
                     insert_generated_ad(cursor, generated_ad)
 
