@@ -38,6 +38,9 @@ const extractads = async (pages: { url: string; markdown: string }[]) => {
       url: page.url,
       ...chatResponse.choices![0].message!.parsed!,
     });
+
+    // sleep for 1 second
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
   return ads;
@@ -47,8 +50,8 @@ const crawl = async (url: string) => {
   const app = new FirecrawlApp({ apiKey: process.env.FIRECRAWL_API_KEY! });
 
   const crawlResponse = await app.crawlUrl(url, {
-    limit: 1,
-    maxDepth: 1,
+    limit: 5,
+    maxDepth: 10,
     ignoreSitemap: true,
     scrapeOptions: {
       formats: ["markdown", "html"],
