@@ -42,7 +42,7 @@ class AdvertisementPlacement(BaseModel):
 class GeneratedAdvertisementText(BaseModel):
     segue: str
     content: str
-
+    exit: str
 def transcribe_audio_with_timestamps(file_path: str, audio_id: str):
     print(f"Starting transcription for file: {file_path}")
     audio = AudioSegment.from_file(file_path)
@@ -245,7 +245,8 @@ def parse_advertisement_xml(xml_content: str) -> List[GeneratedAdvertisementText
     for ad in root.findall('.//advertisement'):
         segue = ad.find('segue').text
         content = ad.find('content').text
-        advertisements.append(GeneratedAdvertisementText(segue=segue, content=content))
+        exit = ad.find('exit').text
+        advertisements.append(GeneratedAdvertisementText(segue=segue, content=content, exit=exit))
 
     return advertisements
 
@@ -276,10 +277,30 @@ You will be given the advertisement placement and the surrounding segments of th
 Your job is to finnse the advertisement placement such that it is a part of the conversation and is not intrusive.
 
 Here are some examples of how you can finnse the advertisement placement:
-<example_advertisement_segue>
+<examples>
+<advertisement>
+<segue>
 Considering how much everything else has gone up over the last few years like haircuts I guess we shouldn't be too surprised even if it is a tough pill to swallow like today's segue to our sponsor, The Big Thunder Game.. (advertisement content here)
-and back to the show.
-</example_advertisement_segue>
+</segue>
+<content>
+The Big Thunder Game brings an exciting new way to play MMORPGs with friends regardless of their ability to play.
+</content>
+<exit>
+(add some context here that continues to the next segment), now back to the show.
+</exit>
+</advertisement>
+<advertisement>
+<segue>
+if you're planning your next PC build then consider checking out our sponsor VIP SCD key
+</segue>
+<content>
+Their Windows 10 and 11 OEM Keys sell for a fraction of retail and will unlock the full potential of your OS it'll also remove.. (more content here)
+</content>
+<exit>
+use VIP SCD key on your next PC build and now lets get back to this PC.
+</exit>
+</advertisement>
+</examples>
 
 Here is the advertisement placement:
 <advertisement_placement>
@@ -308,6 +329,9 @@ finnse your way here
 <content>
 keep it short and concise
 </content>
+<exit>
+the exit of the content
+</exit>
 </advertisement>
 </advertisements>
 </response>
@@ -368,7 +392,7 @@ print(f"Possible Ad Placements: {ad_placements}")
 generated_advertisement_texts = generate_advertisements(ad_placements[0], transcription_segments)
 print(f"Generated Advertisement Texts: {generated_advertisement_texts}")
 
-advertisement_audio_path = generate_advertisement_audio(generated_advertisement_texts[0].segue + " " + generated_advertisement_texts[0].content)
+advertisement_audio_path = generate_advertisement_audio(generated_advertisement_texts[0].segue + " " + generated_advertisement_texts[0].content + " " + generated_advertisement_texts[0].exit)
 
 
 # EXPERIMENTAL TESTING
