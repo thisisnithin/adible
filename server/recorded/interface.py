@@ -57,8 +57,8 @@ def transcribe_audio_with_timestamps(file_path: str, audio_id: str):
                 "text": t_segment.text
             })
         
-        total_time_processed += len(segment)
-        print(f"Total time processed: {total_time_processed / 1000} seconds")  # Print total time processed in seconds
+        total_time_processed += len(segment) / 1000
+        print(f"Total time processed: {total_time_processed} seconds")  # Print total time processed in seconds
 
     print("Saving transcription data to file...")
     transcription_data = {
