@@ -38,7 +38,7 @@ export default async function Results({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="border w-full h-full my-12 overflow-auto">
+      <div className="border w-full h-full my-12 overflow-auto rounded-md">
         <List />
       </div>
       <Export />
