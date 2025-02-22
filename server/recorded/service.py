@@ -4,13 +4,15 @@ from uuid import uuid4
 from domain.audio_file import get_audio_file_by_id, update_audio_status
 from db import get_db_connection
 
-from interface import determine_ad_placement, generate_advertisement_audio, generate_advertisements, insert_advertisement_audio, transcribe_audio_with_timestamps
+from interface import determine_ad_placement, generate_ad_audio_with_nearby_audio, generate_advertisement_audio, generate_advertisements, insert_advertisement_audio, transcribe_audio_with_timestamps
 from domain.transcription_segments import TranscriptionSegmentDb, get_transcription_segment_by_id, insert_transcription_segment
 from domain.common import ProcessingStatus
 from domain.generated_ad import GeneratedAd, get_generated_ad_by_id, insert_generated_ad
 from domain.advertisement import get_advertisements
 from domain.stitched_audio import update_stitched_audio_bytes, update_stitched_audio_status
 from utils import sync_sheet_to_db
+
+_ad_audio_cache = {}
 
 def process_audio_file_and_generate_advertisements(audio_file_id: str):
     print(f"Starting processing for audio file {audio_file_id}")
@@ -153,3 +155,27 @@ def stitch_advertisements_into_audio_file(audio_file_id: str, generated_ad_id: s
             update_stitched_audio_status(cursor, stitched_audio_id, ProcessingStatus.FAILED)
             conn.commit()
             
+def produce_ad_audio_with_nearby_audio(generated_ad: GeneratedAd):
+    if generated_ad.id in _ad_audio_cache:
+        return _ad_audio_cache[generated_ad.id]
+
+    if generated_ad.audio_bytes is None:
+        raise ValueError("Generated ad audio bytes are not available")
+    
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        transcription_segment = get_transcription_segment_by_id(cursor, generated_ad.transcription_segment_id)
+        if not transcription_segment:
+            raise ValueError("Transcription segment not found")
+        
+        audio_file = get_audio_file_by_id(cursor, generated_ad.audio_file_id)
+        if not audio_file:
+            raise ValueError("Audio file not found")
+        
+        ad_audio_with_nearby_audio = generate_ad_audio_with_nearby_audio(generated_ad.audio_bytes, transcription_segment, audio_file.bytes)
+        _ad_audio_cache[generated_ad.id] = ad_audio_with_nearby_audio
+        
+        return ad_audio_with_nearby_audio
+        
+        
+    

@@ -390,44 +390,18 @@ def insert_advertisement_audio(original_audio_bytes: bytes, ad_audio_bytes: byte
     
     return output_path
 
-# Transcription
-# transcribe_audio_with_timestamps("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3", str(uuid4()))
+def generate_ad_audio_with_nearby_audio(generated_ad_bytes: bytes, transcription_segment: TranscriptionSegment, original_audio_bytes: bytes) -> bytes:
+    original_audio = AudioSegment.from_file(io.BytesIO(original_audio_bytes))
+    ad_audio = AudioSegment.from_file(io.BytesIO(generated_ad_bytes))
 
-# Determine Ad Placement
-# EXPERIMENTAL
-# transcription_segments = load_transcription_segments("transcription_state.json")
-# ad_placements = determine_ad_placement(transcription_segments)
+    start_ms = max(0, int((transcription_segment.start - 5) * 1000))  # 5 sec before
+    end_ms = int((transcription_segment.end + 10) * 1000)  # 10 sec after
+    insert_point_ms = int(transcription_segment.end * 1000)
 
-# print(f"Possible Ad Placements: {ad_placements}")
+    before_segment = original_audio[start_ms:insert_point_ms]
+    after_segment = original_audio[insert_point_ms:end_ms]
+    final_audio = before_segment + ad_audio + after_segment
 
-# generated_advertisement_texts = generate_advertisements(ad_placements[0], transcription_segments)
-# print(f"Generated Advertisement Texts: {generated_advertisement_texts}")
-
-# advertisement_audio_path = generate_advertisement_audio(generated_advertisement_texts[0].segue + " " + generated_advertisement_texts[0].content + " " + generated_advertisement_texts[0].exit)
-
-
-# EXPERIMENTAL TESTING
-# target_segment = ad_placements[0].transcription_segment
-# starting_segment = None
-# for segment in transcription_segments:
-#     if segment.no == target_segment.no - 2:
-#         starting_segment = segment
-#         break
-
-# next_segment = None
-# for segment in transcription_segments:
-#     if segment.no == target_segment.no + 1:
-#         next_segment = segment
-#         break
-
-# original_audio = AudioSegment.from_file("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3")
-
-# start_time_ms = starting_segment.start * 1000
-# end_time_ms = target_segment.end * 1000
-# play_audio(original_audio[start_time_ms:end_time_ms])
-
-# ad_audio = AudioSegment.from_file(advertisement_audio_path)
-# play_audio(ad_audio)
-
-# next_start_time_ms = next_segment.start * 1000
-# play_audio(original_audio[next_start_time_ms:])
+    buffer = io.BytesIO()
+    final_audio.export(buffer, format="mp3")
+    return buffer.getvalue()

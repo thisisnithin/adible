@@ -9,7 +9,7 @@ from domain.audio_file import AudioFile, get_audio_files, insert_audio_file, get
 from domain.common import ProcessingStatus
 from domain.generated_ad import get_generated_ad_by_id, get_generated_ads_by_audio_file_id
 from domain.stitched_audio import StitchedAudio, get_stitched_audio_by_id, get_stitched_audios, insert_stitched_audio
-from service import process_audio_file_and_generate_advertisements, stitch_advertisements_into_audio_file
+from service import process_audio_file_and_generate_advertisements, produce_ad_audio_with_nearby_audio, stitch_advertisements_into_audio_file
 from domain.advertisement import AdvertisementDb, get_advertisement_by_id, insert_advertisement, get_advertisements
 
 app = FastAPI()
@@ -125,7 +125,7 @@ def get_generated_ad(ad_id: str, range: str = Header(None)):
             if not ad:
                 return {"error": "Generated ad not found"}, 404
             
-            content = ad.audio_bytes
+            content = produce_ad_audio_with_nearby_audio(ad)
             content_length = len(content)
             
             if range:
