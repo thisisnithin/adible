@@ -9,8 +9,7 @@ import json
 from elevenlabs.client import ElevenLabs
 import xml.etree.ElementTree as ET
 import uuid
-
-from pydub.playback import play as play_audio
+import io
 
 load_dotenv()
 
@@ -367,6 +366,27 @@ def generate_advertisement_audio(advertisement_text: str, voice_id: str = "JBFqn
     print(f"Audio file saved at {save_file_path}")
     
     return save_file_path
+
+
+def insert_advertisement_audio(original_audio_bytes: bytes, ad_audio_bytes: bytes, segment_after: TranscriptionSegment, output_path: str = None) -> str:
+    print(f"Inserting ad after segment ending at {segment_after.end} seconds")
+    
+    original_audio = AudioSegment.from_file(io.BytesIO(original_audio_bytes))
+    ad_audio = AudioSegment.from_file(io.BytesIO(ad_audio_bytes))
+    
+    insert_point_ms = int(segment_after.end * 1000)
+    
+    first_part = original_audio[:insert_point_ms]
+    second_part = original_audio[insert_point_ms:]
+    final_audio = first_part + ad_audio + second_part
+    
+    if not output_path:
+        output_path = f"output_{uuid.uuid4()}.mp3"
+    
+    final_audio.export(output_path, format="mp3")
+    print(f"Combined audio saved to {output_path}")
+    
+    return output_path
 
 # Transcription
 # transcribe_audio_with_timestamps("/Users/pradyumnarahulk/Downloads/demo/rogan_chess_preparation_w_magnus.mp3", str(uuid4()))

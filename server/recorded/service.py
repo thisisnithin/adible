@@ -4,11 +4,12 @@ from uuid import uuid4
 from domain.audio_file import get_audio_file_by_id, update_audio_status
 from db import get_db_connection
 
-from interface import determine_ad_placement, generate_advertisement_audio, generate_advertisements, transcribe_audio_with_timestamps
-from domain.transcription_segments import TranscriptionSegmentDb, insert_transcription_segment
+from interface import determine_ad_placement, generate_advertisement_audio, generate_advertisements, insert_advertisement_audio, transcribe_audio_with_timestamps
+from domain.transcription_segments import TranscriptionSegmentDb, get_transcription_segment_by_id, insert_transcription_segment
 from domain.common import ProcessingStatus
-from domain.generated_ad import GeneratedAd, insert_generated_ad
+from domain.generated_ad import GeneratedAd, get_generated_ad_by_id, insert_generated_ad
 from domain.advertisement import get_advertisements
+from domain.stitched_audio import StitchedAudio, insert_stitched_audio, update_stitched_audio_bytes, update_stitched_audio_status
 
 def process_audio_file_and_generate_advertisements(audio_file_id: str):
     print(f"Starting processing for audio file {audio_file_id}")
@@ -92,3 +93,57 @@ def process_audio_file_and_generate_advertisements(audio_file_id: str):
             cursor = conn.cursor()
             update_audio_status(cursor, audio_file_id, ProcessingStatus.FAILED)
             conn.commit()
+
+def stitch_advertisements_into_audio_file(audio_file_id: str, generated_ad_id: str, stitched_audio_id: str):
+    print(f"Stitching advertisements into audio file {audio_file_id}")
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+
+            update_stitched_audio_status(cursor, stitched_audio_id, ProcessingStatus.PROCESSING)
+            conn.commit()
+
+            audio_file = get_audio_file_by_id(cursor, audio_file_id)
+            generated_ad = get_generated_ad_by_id(cursor, generated_ad_id)
+
+            if not audio_file or not generated_ad:
+                raise ValueError("Audio file or generated ad not found")
+            
+            if generated_ad.processing_status != ProcessingStatus.COMPLETE:
+                raise ValueError("Generated ad is not complete")
+            
+            if generated_ad.audio_bytes is None:
+                raise ValueError("Generated ad audio bytes are not available")
+            
+            if audio_file.bytes is None:
+                raise ValueError("Audio file bytes are not available")
+            
+            transcription_segment = get_transcription_segment_by_id(cursor, generated_ad.transcription_segment_id)
+
+            if not transcription_segment:
+                raise ValueError("Transcription segment not found")
+            
+            print(f"Stitching advertisement into audio file {audio_file_id} after segment {transcription_segment.no}")
+            output_path = insert_advertisement_audio(audio_file.bytes, generated_ad.audio_bytes, transcription_segment)
+
+            print(f"Stitched advertisement into audio file {audio_file_id} at {output_path}")
+
+            stitched_audio_bytes = open(output_path, "rb").read()
+            os.remove(output_path)
+
+            update_stitched_audio_bytes(cursor, stitched_audio_id, stitched_audio_bytes)
+
+            conn.commit()
+            
+            update_stitched_audio_status(cursor, stitched_audio_id, ProcessingStatus.COMPLETE)
+            conn.commit()
+            
+            print(f"Completed stitching advertisements into audio file {audio_file_id}")
+            
+    except Exception as e:
+        print(f"Error stitching advertisements into audio file {audio_file_id}: {str(e)}")
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            update_stitched_audio_status(cursor, stitched_audio_id, ProcessingStatus.FAILED)
+            conn.commit()
+            

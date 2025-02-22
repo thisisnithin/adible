@@ -21,7 +21,7 @@ def row_to_stitched_audio(row) -> StitchedAudio:
         processing_status=ProcessingStatus(row['processing_status'])
     )
 
-def insert_stitched_audio(cursor: Cursor, audio: StitchedAudio) -> int:
+def insert_stitched_audio(cursor: Cursor, audio: StitchedAudio) -> str:
     query = """
     INSERT INTO stitched_audio (id, audio_file_id, generated_ad_id, bytes, processing_status)
     VALUES (?, ?, ?, ?, ?)
@@ -38,3 +38,12 @@ def get_stitched_audios(cursor: Cursor) -> list[StitchedAudio]:
     query = "SELECT * FROM stitched_audio"
     rows = cursor.execute(query).fetchall()
     return [row_to_stitched_audio(row) for row in rows]
+
+def update_stitched_audio_bytes(cursor: Cursor, audio_id: str, bytes: bytes):
+    query = "UPDATE stitched_audio SET bytes = ? WHERE id = ?"
+    cursor.execute(query, (bytes, audio_id))
+
+def get_stitched_audio_by_id(cursor: Cursor, audio_id: str) -> StitchedAudio:
+    query = "SELECT * FROM stitched_audio WHERE id = ?"
+    row = cursor.execute(query, (audio_id,)).fetchone()
+    return row_to_stitched_audio(row) if row else None

@@ -36,3 +36,8 @@ def get_transcription_segments(cursor: Cursor, audio_file_id: str) -> list[Trans
     query = "SELECT * FROM transcription_segments WHERE audio_file_id = ?"
     rows = cursor.execute(query, (audio_file_id,)).fetchall()
     return [row_to_transcription_segment(row) for row in rows]
+
+def get_transcription_segment_by_id(cursor: Cursor, segment_id: str) -> TranscriptionSegmentDb:
+    query = "SELECT * FROM transcription_segments WHERE id = ?"
+    row = cursor.execute(query, (segment_id,)).fetchone()
+    return row_to_transcription_segment(row) if row else None
