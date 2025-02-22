@@ -411,11 +411,13 @@ Please follow the below rules when selecting the voice:
 Please respond in the format provided between the <example></example> tags.
 <example>
 <response>
+<voice_determination>
 <thinking>
 This conversation seems to be between two people, they seem to be interested in an sports car.
 Both people interested seem to be males in their 30s.
 </thinking>
 <voice id='voice id'/> <!-- The voice that should be used for the advertisement -->
+</voice_determination>
 </response>
 </example>
 """
@@ -426,9 +428,15 @@ Both people interested seem to be males in their 30s.
         stop=["</response>"]
     )
 
-    xml_response = response.choices[0].message.content
-    root = ET.fromstring(f"<response>{xml_response}</response>")
-    voice_id = root.find('.//voice').get('id')
+    try:
+        xml_response = response.choices[0].message.content
+        print(f"LLM Response for determining optimal voice:\n{xml_response}")
+        root = ET.fromstring(f"<response>{xml_response}</response>")
+        voice_element = root.find('.//voice')
+        voice_id = voice_element.get('id') if voice_element is not None else "default"
+    except Exception as e:
+        print(f"Error parsing voice determination response: {e}")
+        voice_id = "default"
     return voice_id
     
 
