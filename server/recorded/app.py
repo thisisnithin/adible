@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import uvicorn
 
 from db import get_db_connection
-from domain.audio_file import AudioFile, insert_audio_file, get_audio_file_by_id
+from domain.audio_file import AudioFile, get_audio_files, insert_audio_file, get_audio_file_by_id
 from domain.common import ProcessingStatus
 from domain.generated_ad import get_generated_ad_by_id, get_generated_ads_by_audio_file_id
 from service import process_audio_file_and_generate_advertisements
@@ -49,8 +49,8 @@ async def upload_audio(background_tasks: BackgroundTasks, file: UploadFile = Fil
     
     return {"id": audio_file.id}
 
-@app.get("/audio/{file_id}")
-async def get_audio(file_id: str):
+@app.get("/audio_files/{file_id}")
+async def get_audio_file(file_id: str):
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -75,6 +75,29 @@ async def get_audio(file_id: str):
             }
     except Exception as e:
         print(f"Error fetching audio file: {str(e)}")
+        raise
+
+@app.get("/audio_files")
+async def get_all_audio_files_http():
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            audio_files = get_audio_files(cursor)
+            
+            return [{
+                "id": audio.id,
+                "file_name": audio.file_name,
+                "processing_status": audio.processing_status,
+                "generated_ads": [{
+                    "id": ad.id,
+                    "segue": ad.segue,
+                    "content": ad.content,
+                    "exit": ad.exit,
+                    "transcription_segment_id": ad.transcription_segment_id
+                } for ad in get_generated_ads_by_audio_file_id(cursor, audio.id)]
+            } for audio in audio_files]
+    except Exception as e:
+        print(f"Error fetching audio files: {str(e)}")
         raise
 
 @app.get("/generated-ad/{ad_id}")
