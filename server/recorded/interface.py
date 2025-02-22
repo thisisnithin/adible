@@ -6,7 +6,6 @@ from openai import OpenAI
 from pydantic import BaseModel
 from pydub import AudioSegment
 import json
-from uuid import uuid4
 from elevenlabs.client import ElevenLabs
 from elevenlabs import play
 import xml.etree.ElementTree as ET
@@ -321,7 +320,7 @@ keep it short and concise
     return parse_advertisement_xml(response.choices[0].message.content)
     
 
-def generate_advertisement(ad_placement: AdvertisementPlacement, transcription_segments: list[TranscriptionSegment]) -> str:  
+def generate_advertisements(ad_placement: AdvertisementPlacement, transcription_segments: list[TranscriptionSegment]) -> List[GeneratedAdvertisementText]:  
     surrounding_segments = []
     segment_nos = {segment.no: segment for segment in transcription_segments}
 
@@ -330,9 +329,9 @@ def generate_advertisement(ad_placement: AdvertisementPlacement, transcription_s
         if target_no in segment_nos:
             surrounding_segments.append(segment_nos[target_no])
 
-    advertisement_text = _generate_advertisement_text(ad_placement, surrounding_segments)
+    advertisement_texts = _generate_advertisement_text(ad_placement, surrounding_segments)
 
-    return advertisement_text
+    return advertisement_texts
 
 def generate_advertisement_audio(advertisement_text: str) -> str:
     elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
@@ -353,5 +352,8 @@ ad_placements = determine_ad_placement(transcription_segments)
 
 print(f"Possible Ad Placements: {ad_placements}")
 
-advertisement_text = generate_advertisement(ad_placements[0], transcription_segments)
-print(f"Advertisement Text: {advertisement_text}")
+generated_advertisement_texts = generate_advertisements(ad_placements[0], transcription_segments)
+print(f"Generated Advertisement Texts: {generated_advertisement_texts}")
+
+for generated_advertisement_text in generated_advertisement_texts:
+    generate_advertisement_audio(generated_advertisement_text.segue + " " + generated_advertisement_text.content)
