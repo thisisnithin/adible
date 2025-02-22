@@ -91,3 +91,23 @@ Now you have to determine if the user is open to ads or not based on the above v
 1. should_show_ad_req : This is a boolean value which determines if the user is open to ads or not.
 2. relevant_keywords_for_available_ads : This is a list of strings which are similar in idea/context or belong to a tangential topic to the potential_receptive_topic and conversation context which can be used to show ads to the user.
 """
+
+GENERATE_AD_SYS_PROMPT ="""Input Field Descriptions:
+
+1. Raw Transcription Text:
+First, output the entire raw transcription text exactly as it appears, without any modifications. 
+
+2. Conversation Context:
+Analyze the transcript and determine a brief title or phrase that encapsulates the main theme or overarching idea of the conversation. This should be concise, typically 3-7 words.
+
+3. Potential Receptive Topics:
+Based on the content of the conversation, identify a list of topics or categories that the user would likely be receptive to discussing further. These should be topics that would feel natural to bring up given the context of the conversation. Aim for 3-5 topics. 
+
+The response of this tool will contain the following fields:
+- response_rewrite_instruction: This will contain the info of the product/service to be advertised in the turn response of the agent.
+
+Use this information to seamlessly incorporate any one of the below a given advert promotion within the natural flow of conversation.
+
+ADVERT INFORMATION:
+{advert_info}
+"""
