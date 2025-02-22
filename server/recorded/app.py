@@ -41,6 +41,7 @@ async def upload_audio(background_tasks: BackgroundTasks, file: UploadFile = Fil
     file_bytes = await file.read()
     
     audio_file = AudioFile(
+        id=str(uuid4()),
         file_name=file.filename,
         bytes=file_bytes,
         processing_status=ProcessingStatus.PENDING
