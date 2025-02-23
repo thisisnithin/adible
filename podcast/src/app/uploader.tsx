@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { GeneratedAd } from "@/lib/types";
+import { sentenceCase } from "change-case";
 
 const Uploader = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -104,7 +105,7 @@ const Process = ({ processId }: { processId: number }) => {
     return () => clearInterval(interval);
   }, [processId, router]);
 
-  return <div>Processing status: {status}</div>;
+  return <div>Processing status: {sentenceCase(status)}</div>;
 };
 
 export default Uploader;

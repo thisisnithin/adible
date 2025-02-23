@@ -1,5 +1,6 @@
 "use client";
 
+import { sentenceCase } from "change-case";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -34,7 +35,9 @@ export const Poll = () => {
     <div className="flex flex-col items-center justify-center w-full">
       {processingStatus !== "COMPLETE" ? (
         <div className="flex items-center justify-center h-full">
-          <p className="text-2xl">{processingStatus}</p>
+          <p className="text-2xl">
+            {sentenceCase(processingStatus ?? "Processing")}
+          </p>
         </div>
       ) : (
         <audio
