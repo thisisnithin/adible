@@ -32,10 +32,10 @@ def load_sheet_data(service_account_json_path="credentials.json", spreadsheet_id
     for row in values[1:]:
         if len(row) >= 4:
             data.append({
-                'url': row[0],
-                'title': row[1],
-                'content': row[2],
-                'tags': [tag.strip() for tag in row[3].split(',')]
+                'url': row[1],
+                'title': row[2],
+                'content': row[3],
+                'tags': [tag.strip() for tag in row[4].split(',')]
             })
     
     return data
