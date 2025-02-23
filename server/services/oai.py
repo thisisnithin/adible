@@ -3,7 +3,7 @@ from typing import Optional, Type, Any
 from openai import OpenAI, BaseModel
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(dotenv_path="server/.env")
 
 oai_client = OpenAI()
 

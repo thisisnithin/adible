@@ -1,12 +1,11 @@
-import json
 import os
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(dotenv_path="server/.env")
 
-def load_sheet_data(service_account_json_path="server/rt_convo/credentials.json", spreadsheet_id = os.getenv("SHEET_ID"), sheet_range="Sheet1!A:Z"):
+def load_sheet_data(service_account_json_path="server/services/credentials.json", spreadsheet_id = os.getenv("SHEET_ID"), sheet_range="Sheet1!A:Z"):
     """
     Loads data from a Google Sheet using a service account.
 
@@ -34,19 +33,3 @@ def load_sheet_data(service_account_json_path="server/rt_convo/credentials.json"
     values = result.get('values', [])
 
     return values
-
-# if __name__ == "__main__":
-#
-#     # Replace these values with your own
-#     SERVICE_ACCOUNT_JSON = "server/rt_convo/credentials.json"
-#     SPREADSHEET_ID =  os.getenv("SHEET_ID")
-#     SHEET_RANGE = "Sheet1!A:Z"  # Reads all columns A-Z in 'Sheet1'
-#
-#     # Load the data
-#     data = load_sheet_data(SERVICE_ACCOUNT_JSON, SPREADSHEET_ID, SHEET_RANGE)
-#
-#     if not data:
-#         print("No data found.")
-#     else:
-#         for row in data:
-#             print(row)

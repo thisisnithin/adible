@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -12,5 +12,11 @@ class GetAdReq(BaseModel):
 
 class GetAdResp(BaseModel):
     response_rewrite_instructions: str
-    intro_sfx: str
+    source_ids: Optional[List[str]]
 
+
+class GetAdByIdReq(BaseModel):
+    source_id: str
+
+class GetAdByIdResp(BaseModel):
+    urls: List[str]
