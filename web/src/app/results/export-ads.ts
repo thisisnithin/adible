@@ -1,7 +1,8 @@
 "use server";
 
-import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
+import { GoogleSpreadsheet } from "google-spreadsheet";
+import { randomUUID } from "node:crypto";
 
 const SPREADSHEET_ID = "1aKFSYOadstuU0v5stSIFKzmVdii9iHkgXb-fHsFXS84";
 const SPREADSHEET_SHEET_NAME = "Sheet1";
@@ -40,8 +41,8 @@ export const exportAds = async (
 
   // Process each ad
   for (const ad of result) {
-    // Construct the row data.
-    // Assumes headers: "URL", "Title", "Content", "Tags"
+    // Construct the common row data.
+    // Assumes headers: "Id", "URL", "Title", "Content", "Tags"
     const rowData = {
       URL: ad.url,
       Title: ad.title,
@@ -52,14 +53,21 @@ export const exportAds = async (
     if (urlRowMap.has(ad.url)) {
       // If the URL exists, update the existing row.
       const existingRow = urlRowMap.get(ad.url);
-      existingRow.URL = rowData.URL;
-      existingRow.Title = rowData.Title;
-      existingRow.Content = rowData.Content;
-      existingRow.Tags = rowData.Tags;
+      // If the row does not already have an Id, generate and assign one.
+      if (!existingRow.get("Id")) {
+        existingRow.set("Id", randomUUID());
+      }
+      existingRow.set("URL", rowData.URL);
+      existingRow.set("Title", rowData.Title);
+      existingRow.set("Content", rowData.Content);
+      existingRow.set("Tags", rowData.Tags);
       await existingRow.save();
     } else {
-      // Otherwise, append a new row.
-      await sheet.addRow(rowData);
+      // Otherwise, append a new row with a generated uuid.
+      await sheet.addRow({
+        Id: randomUUID(),
+        ...rowData,
+      });
     }
   }
 };
