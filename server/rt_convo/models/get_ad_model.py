@@ -12,7 +12,8 @@ class GetAdReq(BaseModel):
 
 class GetAdResp(BaseModel):
     response_rewrite_instructions: str
-    source_ids: Optional[List[str]]
+    intro_sfx: Optional[str]
+    # source_ids: Optional[List[str]]
 
 
 class GetAdByIdReq(BaseModel):
